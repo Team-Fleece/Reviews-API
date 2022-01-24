@@ -29,7 +29,7 @@ const sortRelevant = (reviewList) => {
 }
 
 module.exports.getReviews = ({page = 0, count = 5, sort, product_id = 1}) => {
-  product_id = 2;
+  product_id = 2; //use valid product ID while still using sample data
   let order = 'helpfulness DESC, date DESC';
   if (sort === 'helpful') {
     order = 'helpfulness DESC';
@@ -51,6 +51,7 @@ module.exports.getPhotos = (review_id) => {
 }
 
 module.exports.getReviewsMeta = ({product_id = 1}) => {
+  product_id = 2; //use valid product ID while still using sample data
   //product_id from reviews
   //ratings added up from each review
   //recommend added up from each review
