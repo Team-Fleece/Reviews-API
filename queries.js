@@ -56,8 +56,16 @@ module.exports.getReviewsMeta = ({product_id = 1}) => {
   //recommend added up from each review
   //characteristics
   return pool
-    .query(`SELECT * FROM reviews WHERE product_id = ${product_id};`)
-  //need reponse to look something like this:  {
+    .query(`SELECT rating, COUNT(*) FROM reviews WHERE product_id = ${product_id} GROUP BY 1;`)
+    .then(response => {
+
+    })
+
+  `SELECT recommended, COUNT(*) FROM reviews WHERE  product_id = ${product_id} GROUP BY 1;`
+
+  `SELECT c.id, c.name, AVG(cr.value) FROM characteristic_reviews cr JOIN characteristics c ON c.id=cr.characteristic_id WHERE product_id = ${product_id} GROUP BY 1,2;`
+
+  // need reponse to look something like this:  {
   //   product_id: '37312',
   //   ratings: { '2': '1', '3': '5', '4': '2', '5': '3' },
   //   recommended: { false: '2', true: '9' },
@@ -65,6 +73,10 @@ module.exports.getReviewsMeta = ({product_id = 1}) => {
   //   }
 }
 
+//make array of insert command, start with BEGIN, end with END
+//join the relevant commands, spearateed by a new line
+//iterate through characteristics obj(?) and splice a new INSERT line for each
+//same for photos
 module.exports.postReview = ({
   product_id,
   rating,
@@ -77,10 +89,16 @@ module.exports.postReview = ({
   characteristics //maybe these go to a separate query also
 }) => {
   return pool
-    .query(`INSERT INTO reviews...`) //need to add review data to 'review' table as well
+    .query(`BEGIN; INSERT INTO reviews..; END;`) //need to add review data to 'review' table as well
     //also insert data into 'reviews_photos' if there are photos
     //also insert score for each characteristic in 'characteristic_reviews'
 }
+
+module.exports.insertPhotos
+
+
+module.exports.insertCharacteristic
+
 
 module.exports.markReviewHelpful = (review_id) => {
   review_id = 2; //use valid product ID while still using sample data
